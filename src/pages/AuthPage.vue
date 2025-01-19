@@ -1,47 +1,28 @@
 <script>
-import "@/styles/auth-theme.css";
-import { ref } from 'vue';
-import apiClient from '@/apiClient.js';
 import { useAuthStore } from '@/stores/auth';
-import { useMessage } from 'naive-ui';
 
 export default {
-  setup() {
-    const username = ref('');
-    const password = ref('');
-    const loading = ref(false);
-
-    const authStore = useAuthStore();
-    const message = useMessage();
-
-    const handleSubmit = async () => {
-      loading.value = true;
-      try {
-        const { data } = await apiClient.post('/auth/login', {
-          username: username.value,
-          password: password.value,
-        });
-
-        if (data._success) {
-          authStore.setAuthData(data.token, data.user_id);
-          message.success('Login successful! Redirecting...');
-          this.$router.push('/');
-        } else {
-          message.error(data.message || 'Login failed');
-        }
-      } catch (error) {
-        message.error('An error occurred during login');
-      } finally {
-        loading.value = false;
-      }
-    };
-
+  data() {
     return {
-      username,
-      password,
-      loading,
-      handleSubmit,
+      username: '',
+      password: '',
     };
+  },
+  computed: {
+    loginError() {
+      const authStore = useAuthStore();
+      return authStore.loginError;
+    },
+  },
+  methods: {
+    async handleLogin() {
+      const authStore = useAuthStore();
+      await authStore.login(this.username, this.password);
+
+      if (!authStore.loginError) {
+        this.$router.push({ name: 'main' });
+      }
+    },
   },
 };
 </script>
@@ -64,15 +45,12 @@ export default {
         <span></span>
         <span></span>
         <span></span>
-        <span></span>
       </div>
     </div>
     <div class="glass-wrapper">
-      <n-form>
-        <n-input v-model:value="username" placeholder="Username" />
-        <n-input type="password" v-model:value="password" placeholder="Password" />
-        <n-button type="primary" :loading="loading" native-type="submit" @click="handleSubmit">Login</n-button>
-      </n-form>
+      <n-input v-model:value="username" placeholder="Username"/>
+      <n-input type="password" v-model:value="password" placeholder="Password"/>
+      <n-button type="primary" secondary native-type="submit" class="w-full" @click="handleLogin">Login</n-button>
     </div>
   </div>
 </template>
