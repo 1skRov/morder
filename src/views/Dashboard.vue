@@ -30,7 +30,7 @@ export default {
     handleLogout() {
       const authStore = useAuthStore();
       authStore.logout();
-
+      this.$message.info('Вы вышли из системы.');
       this.$router.push({ name: 'login' });
     },
   },

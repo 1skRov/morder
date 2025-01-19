@@ -1,4 +1,5 @@
 <script>
+import "@/styles/auth-theme.css"
 import { useAuthStore } from '@/stores/auth';
 
 export default {
@@ -20,7 +21,10 @@ export default {
       await authStore.login(this.username, this.password);
 
       if (!authStore.loginError) {
+        this.$message.success('Вы успешно вошли в систему!');
         this.$router.push({ name: 'main' });
+      } else {
+        this.$message.error(authStore.loginError);
       }
     },
   },
