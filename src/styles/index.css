@@ -20,6 +20,21 @@
     font-style: normal;
 }
 body {
+    background-color: var(--body-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
     font-family: 'Onest', sans-serif;
     font-weight: 400;
+}
+body {
+}
+
+[data-theme="light"] {
+    --body-bg: #ffffff;
+    --text-color: #000000;
+}
+
+[data-theme="dark"] {
+    --body-bg: #181818;
+    --text-color: #ffffff;
 }
