@@ -1,18 +1,23 @@
 <template>
-  <div class="w-full h-full">
-    <n-button @click="toggleTheme">Переключить тему</n-button>
-    <button  v-if="isAuthenticated" @click="handleLogout">Выход</button>
-    <employees></employees>
+<!--  <div class="w-full h-full">-->
+<!--    <button  v-if="isAuthenticated" @click="handleLogout">Выход</button>-->
+<!--    <employees></employees>-->
+<!--  </div>-->
+  <div class="dashboard">
+    <side-bar class="sidebar"></side-bar>
+    <div class="content">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import { useThemeStore } from '@/stores/theme.js';
 import { useAuthStore } from '@/stores/auth';
-import Employees from "@/pages/Employees.vue";
+import Employees from "@/pages/Employees/Employees.vue";
+import SideBar from "@/views/SideBar.vue";
 
 export default {
-  components: { Employees },
+  components: {SideBar, Employees },
   data() {
     return {};
   },
@@ -23,10 +28,6 @@ export default {
     },
   },
   methods: {
-    toggleTheme() {
-      const themeStore = useThemeStore();
-      themeStore.toggleTheme();
-    },
     handleLogout() {
       const authStore = useAuthStore();
       authStore.logout();
@@ -38,4 +39,15 @@ export default {
 </script>
 
 <style scoped>
+.dashboard {
+  @apply w-screen h-screen flex;
+}
+
+.sidebar {
+  @apply h-full;
+}
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
 </style>

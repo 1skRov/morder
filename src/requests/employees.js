@@ -1,7 +1,13 @@
-import api from '@/apiClient.js';
+import api from '@/requests/axiosToken.js';
 
 export default {
-    getEmployees() {
-        return api.get('/api/employees');
+    async getEmployees() {
+        try {
+            const response = await api.get('employees');
+            return response.data;
+        } catch (error) {
+            console.error('Ошибка при получении сотрудников:', error);
+            throw error;
+        }
     },
 };

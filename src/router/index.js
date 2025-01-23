@@ -7,6 +7,20 @@ const routes = [
     name: 'main',
     component: () => import('@/views/Dashboard.vue'),
     meta: { requiresAuth: true },
+    children: [
+      {
+        path: '/calendar',
+        name: 'calendar',
+        component: () => import('@/pages/Calendar/Calendar.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/employees',
+        name: 'employees',
+        component: () => import('@/pages/Employees/Employees.vue'),
+        meta: { requiresAuth: true },
+      },
+    ]
   },
   {
     path: '/login',
