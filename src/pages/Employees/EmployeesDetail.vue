@@ -107,23 +107,6 @@ export default {
         </div>
       </div>
     </div>
-    <!--    <div class="p-4">-->
-    <!--      <p><strong>ID:</strong> {{ employeeDetails.id }}</p>-->
-    <!--      <p><strong>Имя:</strong> {{ employeeDetails.first_name }}</p>-->
-    <!--      <p><strong>Фамилия:</strong> {{ employeeDetails.last_name }}</p>-->
-    <!--      <p><strong>Отчество:</strong> {{ employeeDetails.middle_name }}</p>-->
-    <!--      <p><strong>Дата Рождения:</strong> {{ employeeDetails.birthday }}</p>-->
-    <!--      <p><strong>Роль:</strong> {{ employeeDetails.role_id }}</p>-->
-    <!--      <p><strong>Активен:</strong> {{ employeeDetails.is_active ? "Да" : "Нет" }}</p>-->
-    <!--      <p><strong>Фото:</strong></p>-->
-    <!--      <img-->
-    <!--          v-if="employeeDetails.photo"-->
-    <!--          :src="employeeDetails.photo"-->
-    <!--          alt="Фото"-->
-    <!--          style="width: 100px; height: 100px; border-radius: 50%;"-->
-    <!--      />-->
-    <!--      <p v-else>Нет фото</p>-->
-    <!--    </div>-->
   </n-drawer>
 </template>
 
