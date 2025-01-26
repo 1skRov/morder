@@ -10,6 +10,7 @@
           show-trigger
           @collapse="handleCollapse"
           @expand="handleExpand"
+          style="background: rgb(14 23 38/1);"
       >
         <n-menu
             :collapsed="collapsed"

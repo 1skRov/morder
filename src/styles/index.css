@@ -35,6 +35,6 @@ body {
 }
 
 [data-theme="dark"] {
-    --body-bg: #181818;
+    --body-bg: rgb(6 8 24/1);
     --text-color: #ffffff;
 }
