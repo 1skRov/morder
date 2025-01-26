@@ -1,5 +1,7 @@
 <script>
 import {computed} from "vue";
+import api from '@/requests/employees.js';
+import { useMessage } from 'naive-ui';
 
 export default {
   name: "EmployeesDetail",
@@ -18,6 +20,7 @@ export default {
     const close = () => {
       emit("update:show", false);
     };
+    const message = useMessage();
 
     const employeeDetails = computed(() => props.employee);
 
@@ -41,12 +44,35 @@ export default {
 
       return `${formattedDate} ${formattedTime}`;
     }
+    const blockEmployee = async () => {
+      try {
+        await api.blockEmployee(employeeDetails.value.id);
+        message.success("Сотрудник заблокирован");
+        emit('refreshList')
+        close();
+      } catch (error) {
+        message.error(error);
+      }
+    };
+
+    const unblockEmployee = async () => {
+      try {
+        await api.unblockEmployee(employeeDetails.value.id);
+        message.success("Сотрудник разблокирован");
+        emit('refreshList');
+        close();
+      } catch (error) {
+        message.error(error);
+      }
+    };
 
 
     return {
       close,
       employeeDetails,
-      formatTimestamp
+      formatTimestamp,
+      blockEmployee,
+      unblockEmployee,
     };
   },
 };
@@ -91,20 +117,25 @@ export default {
           <div><p>Дата рождения</p>{{ formatTimestamp(employee.birthday) }}</div>
           <div><p>Роль</p>{{ employee.role_id || 'не указано' }}</div>
           <div><p>Активен</p>
-            <n-tag :type="employee.active ? 'success' : 'error'">
-              {{ employee.active }}
+            <n-tag :type="employee.is_active ? 'success' : 'error'">
+              {{ employee.is_active ? 'Да' : 'Нет' }}
             </n-tag>
           </div>
           <div><p>Создан</p>{{ formatTimestamp(employee.created_at) }}</div>
           <div><p>Заблокирован</p>
-            <n-tag :type="employee.blocked ? 'success' : 'error'">
-              {{ employee.blocked }}
+            <n-tag :type="employee.blocked ? 'warning' : 'error'">
+              {{ employee.is_blocked ? 'Да' : 'Нет' }}
             </n-tag>
           </div>
         </div>
         <div class="mt-5">
           <div><p>пароль</p>{{ employee.password || 'не указано' }}</div>
         </div>
+      </div>
+      <div class="buttons">
+        <n-button v-if="!employee.is_blocked" @click="blockEmployee" strong secondary type="error" size="small">Блокировать</n-button>
+        <n-button v-else @click="unblockEmployee" strong secondary type="warning" size="small">Разблокировать</n-button>
+        <n-button strong secondary type="info" size="small">Сброс пароля</n-button>
       </div>
     </div>
   </n-drawer>
@@ -138,5 +169,9 @@ export default {
 
 .add-info p {
   @apply text-gray-500 m-0 mb-2;
+}
+
+.buttons {
+  @apply flex justify-between;
 }
 </style>

@@ -59,6 +59,7 @@ export default {
       :show="show"
       @update:show="(value) => $emit('update:show', value)"
       width="30%"
+      style="background: rgb(14 23 38/1)"
   >
     <n-drawer-content title="Добавить сотрудника">
       <n-form label-width="120px" size="small">

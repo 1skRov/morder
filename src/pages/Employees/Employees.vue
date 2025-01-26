@@ -76,7 +76,7 @@ export default {
       },
       {
         title: "Активен",
-        key: "active",
+        key: "is_active",
         render(row) {
           return h(
               NTag,
@@ -85,23 +85,23 @@ export default {
                   marginRight: '6px'
                 },
                 bordered: false,
-                type: row.active === "Да" ? "info" : "error",
+                type: row.is_active ? "success" : "error",
               },
-              row.active
+              row.is_active ? "Да" : "Нет"
           );
         },
       },
       {
         title: "Заблокирован",
-        key: "blocked",
+        key: "is_blocked",
         render(row) {
           return h(
               NTag,
               {
-                type: row.blocked === "Да" ? "error" : "info",
+                type: row.is_blocked ? "error" : "info",
                 bordered: false,
               },
-              row.blocked
+              row.is_blocked ? "Да" : "Нет"
           );
         },
       },
@@ -110,12 +110,6 @@ export default {
     const data = computed(() => {
       return employees.value.map((employee) => ({
         ...employee,
-        id: employee.id,
-        photo: employee.photo,
-        username: employee.username,
-        role: employee.role_id,
-        active: employee.is_active ? "Да" : "Нет",
-        blocked: employee.is_blocked ? "Да" : "Нет",
       }));
     });
 
@@ -132,7 +126,8 @@ export default {
       isDrawerVisible,
       isAddDrawerVisible,
       handleEmployeeCreated,
-      handlePageChange
+      handlePageChange,
+      getEmployees
     };
   },
 };
@@ -178,6 +173,7 @@ export default {
         :employee="selectedEmployee"
         :show="isDrawerVisible"
         @update:show="isDrawerVisible = $event"
+        @refreshList="getEmployees"
     />
     <employeesItem
         :show="isAddDrawerVisible"
