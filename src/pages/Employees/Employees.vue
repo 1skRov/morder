@@ -3,21 +3,27 @@ import {ref, onMounted, computed, h} from "vue";
 import getEmployee from "@/requests/employees.js";
 import EmployeeDetailsDrawer from "@/pages/Employees/EmployeesDetail.vue";
 import {NTag} from "naive-ui";
+import employeesItem from "@/pages/Employees/EmployeesItem.vue";
 
 export default {
   name: "Employees",
   components: {
     EmployeeDetailsDrawer,
+    employeesItem
   },
   setup() {
     const employees = ref([]);
     const selectedEmployee = ref(null);
     const isDrawerVisible = ref(false);
+    const isAddDrawerVisible = ref(false);
     const total = ref(0);
     const totalPage = computed(() => ({
       pageSize: 10,
       page: total.value
     }))
+    const handlePageChange = (curPage) => {
+      total.value = curPage
+    }
 
     const getEmployees = async () => {
       try {
@@ -31,6 +37,9 @@ export default {
       } catch (error) {
         console.error("Ошибка при получении сотрудников:", error);
       }
+    };
+    const handleEmployeeCreated = async () => {
+      await getEmployees();
     };
     const rowProps = (row) => {
       return {
@@ -121,6 +130,9 @@ export default {
       columns,
       selectedEmployee,
       isDrawerVisible,
+      isAddDrawerVisible,
+      handleEmployeeCreated,
+      handlePageChange
     };
   },
 };
@@ -147,7 +159,7 @@ export default {
         </div>
       </div>
       <div class="">
-        <n-button strong secondary type="success">
+        <n-button strong secondary type="success" @click="isAddDrawerVisible = true">
           Добавить сотрудника
         </n-button>
       </div>
@@ -158,6 +170,7 @@ export default {
         :row-props="rowProps"
         :pagination="totalPage"
         size="small"
+        :on-update:page="handlePageChange"
         style="width:100%; height:100%"
     />
     <employee-details-drawer
@@ -165,6 +178,11 @@ export default {
         :employee="selectedEmployee"
         :show="isDrawerVisible"
         @update:show="isDrawerVisible = $event"
+    />
+    <employeesItem
+        :show="isAddDrawerVisible"
+        @update:show="isAddDrawerVisible = $event"
+        @employeeCreated="handleEmployeeCreated"
     />
   </div>
 </template>

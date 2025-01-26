@@ -10,4 +10,13 @@ export default {
             throw error;
         }
     },
+    async createEmployee(employeeData) {
+        try {
+            const response = await api.post("employees", employeeData);
+            return response.data;
+        } catch (error) {
+            console.error("Ошибка при создании сотрудника:", error);
+            throw error;
+        }
+    },
 };
